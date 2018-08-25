@@ -38,12 +38,12 @@ CPU_STK PRINT_TASK_STK[PRINT_TASK_STK_SIZE];
 void Print_task(void *p_arg);
 
 #define CTRL_TASK_PRIO		5
-#define CTRL_STK_SIZE 		128
+#define CTRL_STK_SIZE 		256
 OS_TCB Ctrl_TaskTCB;
 CPU_STK CTRL_TASK_STK[CTRL_STK_SIZE];
 void CTRL_task(void *p_arg);
 
-#define IPCAP_TASK_PRIO		5
+#define IPCAP_TASK_PRIO		6
 #define IPCAP_STK_SIZE 		128
 OS_TCB IPCAP_TaskTCB;
 CPU_STK IPCAP_TASK_STK[IPCAP_STK_SIZE];
@@ -79,6 +79,8 @@ extern u8 GPGGA_Process_finish_flag;
 extern u8 GPRMC_Process_finish_flag;
 extern u8 GPGSA_Process_finish_flag;
 
+
+extern int step_counter_L,step_counter_R;
 // from cabinet control
 
 extern GPGGA_Data GPGGA_Dat;
@@ -229,7 +231,9 @@ void start_task(void *p_arg)
 							 (OS_ERR 	* )&err);						 
 							 
 							 
-	OSTaskSuspend(&Ctrl_TaskTCB,&err);		 
+							 
+	OSTaskSuspend(&Cabinet_Ctrl_TaskTCB,&err);		 
+	//OSTaskSuspend(&Ctrl_TaskTCB,&err);		 
 	OSTaskSuspend(&GPS_UPDATE_TaskTCB,&err);		 
 	//OSTaskSuspend(&Print_Task_TaskTCB,&err);							 
 	OS_CRITICAL_EXIT();	//退出临界区
@@ -256,8 +260,9 @@ void Print_task(void *p_arg)
 	while(1)
 	{
 		OS_CRITICAL_ENTER();
-		printf("steps_x:%d\tsteps_z:%d\tsteps_theta:%d\r\n",carbinet_state.x.steps,carbinet_state.z.steps,carbinet_state.theta.steps);
+		//printf("steps_x:%d\tsteps_z:%d\tsteps_theta:%d\r\n",carbinet_state.x.steps,carbinet_state.z.steps,carbinet_state.theta.steps);
 		//Print_IMU_Data();
+		printf("%d\t%d\r\n",step_counter_L,step_counter_R);
 		OS_CRITICAL_EXIT();
 		OSTimeDlyHMSM(0,0,0,50,OS_OPT_TIME_HMSM_STRICT,&err);
 	}
@@ -323,30 +328,30 @@ void BSP_Init(void){
 	delay_init(168);  															//初始化延时函数	
 	LED_Init();																			//初始化LED 
 	uart_init(115200);															//初始化串口波特率为460800
-	USART3_Init(9600);															//gps init
-	Adc_Init();         														//初始化ADC
-	relay_init();
+//	USART3_Init(9600);															//gps init
+//	Adc_Init();         														//初始化ADC
+//	relay_init();
 	printf("initializing mpu9250...\r\n");
-//	while(Init_MPU9250()==MPU9250_FAIL){						//初始化MPU9250
-//		led_turn();
-//		delay_ms(100);
-//	}
+	while(Init_MPU9250()==MPU9250_FAIL){						//初始化MPU9250
+		led_turn();
+		delay_ms(100);
+	}
 	printf("mpu9250 initialization completed...\r\n");
 	Motor_Init(10-1,42-1);
-	Init_STM_TIM();
-	Step_motor_init();
+//	Init_STM_TIM();
+//	Step_motor_init();
   TIM4_Cap_Init(0XFFFF,84-1);		
 	EXTIX_Init();
-	limit_switch_Init();
-	limit_switch_param_Init();
-//	printf("starting to calculate offset,don't touch the viechle...\r\n");
-//	offset_cut();
-//	printf("offset get...\r\n");
+//	limit_switch_Init();
+//	limit_switch_param_Init();
+	printf("starting to calculate offset,don't touch the viechle...\r\n");
+	offset_cut();
+	printf("offset get...\r\n");
 	ENAL=1;
 	ENAR=1;
 
-	cabinet_mechanical_init();
-	cabinet_param_init();
+//	cabinet_mechanical_init();
+//	cabinet_param_init();
 }
 
 void cabinet_mechanical_init(void){
@@ -467,14 +472,6 @@ void Clear_arr(char int_part[7],char dec_part[3]){
 	for(i=0;i<3;i++)
 		dec_part[i]=0;
 }
-
-
-
-
-
-
-
-
 
 
 
