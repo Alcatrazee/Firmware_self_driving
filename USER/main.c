@@ -329,8 +329,8 @@ void BSP_Init(void){
 	LED_Init();																			//初始化LED 
 	uart_init(115200);															//初始化串口波特率为460800
 //	USART3_Init(9600);															//gps init
-//	Adc_Init();         														//初始化ADC
-//	relay_init();
+	Adc_Init();         														//初始化ADC
+	relay_init();
 	printf("initializing mpu9250...\r\n");
 	while(Init_MPU9250()==MPU9250_FAIL){						//初始化MPU9250
 		led_turn();
@@ -338,18 +338,20 @@ void BSP_Init(void){
 	}
 	printf("mpu9250 initialization completed...\r\n");
 	Motor_Init(10-1,42-1);
-//	Init_STM_TIM();
-//	Step_motor_init();
   TIM4_Cap_Init(0XFFFF,84-1);		
 	EXTIX_Init();
-//	limit_switch_Init();
-//	limit_switch_param_Init();
+
 	printf("starting to calculate offset,don't touch the viechle...\r\n");
 	offset_cut();
 	printf("offset get...\r\n");
 	ENAL=1;
 	ENAR=1;
 
+	
+//	Init_STM_TIM();
+//	Step_motor_init();
+//	limit_switch_Init();
+//	limit_switch_param_Init();
 //	cabinet_mechanical_init();
 //	cabinet_param_init();
 }
