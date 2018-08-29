@@ -51,20 +51,20 @@ void Motor_Init(u16 arr,u16 psc)
 	
 }
 
-#define T 0.0000025			//period /s
+#define T 0.000005f			//period /s
 
-//定时器3中断服务函数  T=10us
+//定时器5中断服务函数  T=10us
 void TIM5_IRQHandler(void)
 {
 	OSIntEnter();
 	if(TIM_GetITStatus(TIM5,TIM_IT_Update)==SET) //溢出中断
 	{
-		counter_L+=0.000005f;
+		counter_L+=0.000005f;												//计数器增加
 		counter_R+=0.000005f;
-		if(counter_L>=arr_L){
-			counter_L=0;
-			PAout(1)=!PAout(1);
-			step_counter_L++;
+		if(counter_L>=arr_L){												//arr_L是在Move()函数中计算出来的值，
+			counter_L=0;															//当计数器时间超过这个值，则对引脚反相一次
+			PAout(1)=!PAout(1);												//最终表现出来的结果就是不同的arr_L对应不同
+			step_counter_L++;													//的频率，但是这个频率分辨率不高，但是反应迅速。
 		}
 		if(counter_R>=arr_R){
 			counter_R=0;

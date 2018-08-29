@@ -34,7 +34,6 @@ typedef struct
 	float 	angle;							//车体角度	 单位：度								
 	float   frame_ax;
 	float   frame_ay;
-	float   omega_wheel[3];
 	float   angle_offset;
 }RB_State;
 #endif

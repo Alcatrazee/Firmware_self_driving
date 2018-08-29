@@ -7,8 +7,6 @@
 #define Axis_x 0
 #define Axis_y 1
 
-#define L				(400.0f)
-
 //#define STOPMOVING
 
 
@@ -109,9 +107,7 @@ void Speed_Moto_Control(float linear_xyz[2],float linear_v[2])
 	//printf("%.2f\t%.2f\t%.2f\t%.2f\r\n",linear_xyz[0],linear_xyz[1],linear_v[0],linear_v[1]);
 }
 
-
-#define P 56
-#define sec 60
+#define L			400.0f
 #define pulse	1024
 void Move(float linear_v[2]){
 		float tempL=0,tempR=0;
@@ -140,32 +136,31 @@ void Move(float linear_v[2]){
 
 void Controller(u16 signal[4]){
 	CPU_SR_ALLOC();
-	float linear_v_oy[2]={0,0};
-	float linear_v[2]={0};
-	float linear_vxy[2]={0};
-	Get_IMU_Data();
+	float linear_v_oy[2]={0,0};						//声明局部变量，目标速度，y轴与z轴速度
+	float linear_v[2]={0};								//最终落到两个轮子的线速度（由于没有闭环，因此不一定准）
+	float linear_vxy[2]={0};							//过渡变量，作用：计算过程产物，可以优化掉
+	Get_IMU_Data();												//获取IMU数据，获取六轴数据
 	
-	OS_CRITICAL_ENTER();
-	Process_Signal(signal,linear_v_oy);
-	OS_CRITICAL_EXIT();
+	OS_CRITICAL_ENTER();									//进入临界区
+	Process_Signal(signal,linear_v_oy);		//处理输入信号signal[4]
+	OS_CRITICAL_EXIT();										//退出临界区
 	
-	linear_vxy[1]=linear_v_oy[1];
-	Exp_State.omega=linear_v_oy[0];
+	linear_vxy[1]=linear_v_oy[1];					
+	Exp_State.omega=linear_v_oy[0];				//更新期望值
 	
-	linear_vxy[0] = omega_PID(Exp_State.omega,usable_gz);
-	Exp_State.angle=State.angle;
+	linear_vxy[0] = omega_PID(Exp_State.omega,usable_gz);//角速度PID
+	Exp_State.angle=State.angle;					//由于使用角速度闭环，因此期望值等于现在的值
 	
-	if(linear_vxy[0]>2000)
+	if(linear_vxy[0]>2000)								//限幅
 		linear_vxy[0]=2000;
 	else if(linear_vxy[0]<-2000)
 		linear_vxy[0]=-2000;
 
-	Speed_Moto_Control(linear_vxy,linear_v);
+	Speed_Moto_Control(linear_vxy,linear_v);//差速轮移动机器人逆运动学求解
 	
 #ifndef STOPMOVING
-	Move(linear_v);
+	Move(linear_v);												//行动，即移动机构
 #endif
-	
 }
 
 #define max_out 2000

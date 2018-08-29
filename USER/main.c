@@ -32,7 +32,7 @@ void Led_task(void *p_arg);
 
 // task2 is print task
 #define PRINT_TASK_PRIO	6
-#define PRINT_TASK_STK_SIZE 		128
+#define PRINT_TASK_STK_SIZE 		256
 OS_TCB Print_Task_TaskTCB;
 CPU_STK PRINT_TASK_STK[PRINT_TASK_STK_SIZE];
 void Print_task(void *p_arg);
@@ -273,9 +273,7 @@ void CTRL_task(void *p_arg)
 	OS_ERR err;
 	while(1)
 	{
-		
 		Controller(signal);
-
 		OSTimeDlyHMSM(0,0,0,5,OS_OPT_TIME_HMSM_STRICT,&err);
 	}
 }

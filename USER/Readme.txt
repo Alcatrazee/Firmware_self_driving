@@ -33,6 +33,9 @@ RELAY2			PC12
 MOTOR			PA0~PA4 PC2		TIM5
 INPUTCAPTURE	PD12~PD15		TIM4
 PWM(not using)  PA0_PA4 PC2		TIM5
+
+//				carbinet 			//
+
 STEP_MOTOR1 PUL PA6				TIM2&TIM3
 STEP_MOTOR1 DIR PA7
 STEP_MOTOR1 ENA	not assigned yet
@@ -53,6 +56,8 @@ lim_sw(strech_F)PD4
 lim_sw(W_0)		PD5
 lim_sw(W_F)		PD6
 
-conflict peripherals: MOTOR(PWM)
+//				end 				//
 
+
+conflict peripherals: MOTOR(PWM)
 still lack 2-way pwm output for arm strecthing
