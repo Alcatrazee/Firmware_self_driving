@@ -79,12 +79,12 @@ extern u8 GPGGA_Process_finish_flag;
 extern u8 GPRMC_Process_finish_flag;
 extern u8 GPGSA_Process_finish_flag;
 
-// from cabinet control
-
 extern GPGGA_Data GPGGA_Dat;
 extern GPGSA_Data GPGSA_Dat;
 extern GPRMC_Data GPRMC_Dat;
 extern GPVTG_Data GPVTG_Dat;
+
+// from cabinet control
 Carbinet_State carbinet_state; 
 Carbinet_Exp_State carbinet_exp_state;
 
@@ -231,6 +231,7 @@ void start_task(void *p_arg)
 							 
 	OSTaskSuspend(&Ctrl_TaskTCB,&err);		 
 	OSTaskSuspend(&GPS_UPDATE_TaskTCB,&err);		 
+	OSTaskSuspend(&IPCAP_TaskTCB,&err);		 
 	//OSTaskSuspend(&Print_Task_TaskTCB,&err);							 
 	OS_CRITICAL_EXIT();	//退出临界区
 	OSTaskDel((OS_TCB*)0,&err);	//删除start_task任务自身
@@ -323,31 +324,39 @@ void BSP_Init(void){
 	delay_init(168);  															//初始化延时函数	
 	LED_Init();																			//初始化LED 
 	uart_init(115200);															//初始化串口波特率为460800
-	USART3_Init(9600);															//gps init
-	Adc_Init();         														//初始化ADC
-	relay_init();
-	printf("initializing mpu9250...\r\n");
+	
+	Init_STM_TIM();																	//initialize the timer needed 
+	Step_motor_init();															//initialize the pin needed
+	
+	limit_switch_Init();														//initialize the pin needed
+	limit_switch_param_Init();											//initialize the parameter 
+
+	cabinet_mechanical_init();											//reset motor position
+	cabinet_param_init();														//initialize the parameter
+}
+
+
+//	USART3_Init(9600);															//gps init
+//	Adc_Init();         														//初始化ADC
+//	relay_init();
+//	printf("initializing mpu9250...\r\n");
 //	while(Init_MPU9250()==MPU9250_FAIL){						//初始化MPU9250
 //		led_turn();
 //		delay_ms(100);
 //	}
-	printf("mpu9250 initialization completed...\r\n");
-	Motor_Init(10-1,42-1);
-	Init_STM_TIM();
-	Step_motor_init();
-  TIM4_Cap_Init(0XFFFF,84-1);		
-	EXTIX_Init();
-	limit_switch_Init();
-	limit_switch_param_Init();
+//	printf("mpu9250 initialization completed...\r\n");
+//	Motor_Init(10-1,42-1);
+
+//  TIM4_Cap_Init(0XFFFF,84-1);		
+//	EXTIX_Init();
+
 //	printf("starting to calculate offset,don't touch the viechle...\r\n");
 //	offset_cut();
 //	printf("offset get...\r\n");
-	ENAL=1;
-	ENAR=1;
+//	ENAL=1;
+//	ENAR=1;
 
-	cabinet_mechanical_init();
-	cabinet_param_init();
-}
+
 
 void cabinet_mechanical_init(void){
 	// initialize the stm of x axis
