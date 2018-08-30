@@ -5,7 +5,6 @@
 
 double counter_L=0,counter_R=0;
 double arr_L=1,arr_R=1;
-int step_counter_R=0,step_counter_L=0;
 
 //通用定时器3中断初始化
 //arr：自动重装值。
@@ -20,7 +19,6 @@ void Motor_Init(u16 arr,u16 psc)
 	GPIO_InitTypeDef GPIO_InitStructure;
 	
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM5,ENABLE);  ///使能TIM5时钟
-	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA|RCC_AHB1Periph_GPIOC,ENABLE);
 	
   TIM_TimeBaseInitStructure.TIM_Period = arr; 	//自动重装载值
 	TIM_TimeBaseInitStructure.TIM_Prescaler=psc;  //定时器分频
@@ -64,12 +62,10 @@ void TIM5_IRQHandler(void)
 		if(counter_L>=arr_L){
 			counter_L=0;
 			PAout(1)=!PAout(1);
-			step_counter_L++;
 		}
 		if(counter_R>=arr_R){
 			counter_R=0;
 			PAout(0)=!PAout(0);
-			step_counter_R++;
 		}
 	}
 	TIM_ClearITPendingBit(TIM5,TIM_IT_Update);  //清除中断标志位
