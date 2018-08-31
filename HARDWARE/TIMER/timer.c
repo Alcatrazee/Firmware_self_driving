@@ -183,7 +183,6 @@ void TIM1_Int_Init(u16 arr,u16 psc)
 }
 
 float end_time;
-extern float time_start;
 void TIM1_UP_TIM10_IRQHandler(void)
 {
 	OSIntEnter();

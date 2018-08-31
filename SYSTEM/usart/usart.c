@@ -173,11 +173,21 @@ void Clear(void){
 	counter_usart1 = 0;
 }
 
-u8 stop_bit=0;
-extern RB_State Exp_State;
-extern u8 new_input_processed_flag;
-
 void Process(u8 Para){
+	u8 i;
+	char str_z[4] = {0,0,0,0};
+	char str_theta[3] = {0,0,0};
+	for(i=0;i<4;i++)
+		str_z[i] = rec[i+1];
+	carbinet_exp_state.x_pos = atoi(str_z);
+	for(i=0;i<4;i++)
+		str_z[i] = rec[i+5];
+	carbinet_exp_state.z_pos = atoi(str_z);
+	for(i=0;i<3;i++)
+		str_theta[i] = rec[i+9];
+	carbinet_exp_state.theta_pos = atoi(str_theta);
+}
+
 	/*char str_v[5]={0};
 	char str_o[4]={0};
 	u8 i;
@@ -194,26 +204,12 @@ void Process(u8 Para){
 	}
 	o_temp = my_atof(str_o);
 	Exp_State.omega = o_temp;*/
-	
-	u8 i;
-	char str_z[4] = {0,0,0,0};
-	char str_theta[3] = {0,0,0};
-	for(i=0;i<4;i++)
-		str_z[i] = rec[i+1];
-	carbinet_exp_state.x_pos = atoi(str_z);
-	for(i=0;i<4;i++)
-		str_z[i] = rec[i+5];
-	carbinet_exp_state.z_pos = atoi(str_z);
-	for(i=0;i<3;i++)
-		str_theta[i] = rec[i+9];
-	carbinet_exp_state.theta_pos = atoi(str_theta);
-}
 
 /*
 	format
-	V-0000|-000
-	 velocity  omega
-	15 chars in total
+	M00002000180
+	Mxposzposomega
+	
 */
 
 

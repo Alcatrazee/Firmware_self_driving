@@ -16,8 +16,6 @@
 #define DIR3 PCout(5) 
 #define PUL3 PCout(4)
 
-float time_start=0;
-
 void Step_motor_init(void){
 
 	GPIO_InitTypeDef  GPIO_InitStructure;
@@ -60,7 +58,6 @@ void Step3_Pulse(void){
 }
 
 void process_input(u8 carbinet_axis){
-	OS_ERR err;
 	short delta=delta_pos(carbinet_axis);
 	if(my_abs(delta)){
 		//step 1 : saturation 
@@ -93,7 +90,6 @@ void process_input(u8 carbinet_axis){
 						DIR1 = 1;
 					carbinet_state.z.Working_or_not=1;
 					TIM_Cmd(TIM3,ENABLE);
-					time_start = ((float)OSTimeGet(&err)*5)/1000;
 					break;
 				case carbinet_x:
 					carbinet_state.x.step_motor_stage = acclerate;

@@ -3,7 +3,7 @@
 <title>Static Call Graph - [..\OBJ\Template.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image ..\OBJ\Template.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060422: Last Updated: Thu Aug 30 16:32:39 2018
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060422: Last Updated: Fri Aug 31 15:16:02 2018
 <BR><P>
 <H3>Maximum Stack Usage =        224 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -1307,12 +1307,10 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[8d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;process_input
 </UL>
 
-<P><STRONG><a name="[8d]"></a>process_input</STRONG> (Thumb, 358 bytes, Stack size 16 bytes, stepmotor.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 40 + Unknown Stack Size
-<LI>Call Chain = process_input &rArr; Get_avg_steps
+<P><STRONG><a name="[8d]"></a>process_input</STRONG> (Thumb, 322 bytes, Stack size 16 bytes, stepmotor.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 40<LI>Call Chain = process_input &rArr; Get_avg_steps
 </UL>
-<BR>[Calls]<UL><LI><a href="#[11b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OSTimeGet
-<LI><a href="#[ad]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;my_abs
+<BR>[Calls]<UL><LI><a href="#[ad]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;my_abs
 <LI><a href="#[9e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_Cmd
 <LI><a href="#[125]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Saturation
 <LI><a href="#[124]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Judge_need_avg_stage
@@ -3155,12 +3153,12 @@ Global Symbols
 <LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CPU_SR_Restore
 <LI><a href="#[1ad]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OS_SchedLockTimeMeasStart
 </UL>
-<BR>[Called By]<UL><LI><a href="#[230]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OS_TmrTask
+<BR>[Called By]<UL><LI><a href="#[13f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;delay_osschedlock
+<LI><a href="#[230]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OS_TmrTask
 <LI><a href="#[22f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OSTmrStop
 <LI><a href="#[22c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OSTmrStart
 <LI><a href="#[22b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OSTmrRemainGet
 <LI><a href="#[227]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OSTmrDel
-<LI><a href="#[13f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;delay_osschedlock
 </UL>
 
 <P><STRONG><a name="[1ae]"></a>OS_SchedLockTimeMeasStop</STRONG> (Thumb, 44 bytes, Stack size 8 bytes, os_core.o(.text))
@@ -3180,12 +3178,12 @@ Global Symbols
 <LI><a href="#[1ae]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OS_SchedLockTimeMeasStop
 <LI><a href="#[1ab]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OSSched
 </UL>
-<BR>[Called By]<UL><LI><a href="#[230]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OS_TmrTask
+<BR>[Called By]<UL><LI><a href="#[141]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;delay_osschedunlock
+<LI><a href="#[230]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OS_TmrTask
 <LI><a href="#[22f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OSTmrStop
 <LI><a href="#[22c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OSTmrStart
 <LI><a href="#[22b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OSTmrRemainGet
 <LI><a href="#[227]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OSTmrDel
-<LI><a href="#[141]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;delay_osschedunlock
 </UL>
 
 <P><STRONG><a name="[99]"></a>OSSchedRoundRobinCfg</STRONG> (Thumb, 88 bytes, Stack size 24 bytes, os_core.o(.text))
@@ -4374,8 +4372,7 @@ Global Symbols
 <BR>[Calls]<UL><LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CPU_SR_Save
 <LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CPU_SR_Restore
 </UL>
-<BR>[Called By]<UL><LI><a href="#[8d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;process_input
-<LI><a href="#[86]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;UART1_Print_timestamp
+<BR>[Called By]<UL><LI><a href="#[86]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;UART1_Print_timestamp
 <LI><a href="#[11f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;omega_PID
 <LI><a href="#[11a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Get_IMU_Data
 </UL>
